@@ -1,0 +1,59 @@
+/* High Contrast Focus Outline for WCAG AAA Compliance */
+*:focus-visible {
+    outline: 3px solid #0f3c6e !important;
+    outline-offset: 3px !important;
+}
+
+.dark *:focus-visible {
+    outline: 3px solid #ffeb3b !important;
+    outline-offset: 3px !important;
+}
+
+/* Skip to content link styling */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #0f3c6e;
+    color: white;
+    padding: 8px 16px;
+    z-index: 100;
+    transition: top 0.2s ease;
+    font-weight: bold;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* Font Scaling Utilities */
+html.font-scale-sm { font-size: 14px; }
+html.font-scale-md { font-size: 16px; }
+html.font-scale-lg { font-size: 18px; }
+html.font-scale-xl { font-size: 20px; }
+
+/* Dyslexic Friendly Mode */
+body.dyslexic-mode {
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif !important;
+    letter-spacing: 0.05em;
+    word-spacing: 0.1em;
+    line-height: 1.8;
+}
+
+/* High Contrast Theme Override */
+body.high-contrast {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+body.high-contrast a {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+}
+body.high-contrast button, body.high-contrast .bg-brand-700 {
+    background-color: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+body.high-contrast .card-bg {
+    background-color: #111111 !important;
+    border: 1px solid #ffffff !important;
+}
