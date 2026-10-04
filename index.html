@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecAssistIn - Portal de Notícias sobre Tecnologia Assistiva e Inclusão</title>
+    <meta name="description" content="Notícias, inovações e análises sobre tecnologia assistiva, acessibilidade digital e inclusão social.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f5fa',
+                            100: '#e1ebd6',
+                            600: '#1a5693',
+                            700: '#0f3c6e',
+                            800: '#0c2e54',
+                            900: '#0a223e',
+                        },
+                        accessible: {
+                            yellow: '#ffeb3b',
+                            darkbg: '#121212',
+                            darkcard: '#1e1e1e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'serif'],
+                        dyslexic: ['OpenDyslexic', 'Comic Sans MS', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans transition-colors duration-200">
+
+    <!-- Skip to main content link for keyboard/screen reader users -->
+    <a href="#main-content" class="skip-link rounded-br-md shadow-md focus:outline-none focus:ring-2">
+        Pular para o conteúdo principal
+    </a>
+
+    <!-- TOP ACCESSIBILITY TOOLBAR -->
+    <section aria-label="Barra de Ferramentas de Acessibilidade" class="bg-brand-900 text-white text-xs py-2 px-4 border-b border-brand-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-universal-access text-yellow-400 text-sm" aria-hidden="true"></i>
+                <span class="font-semibold text-slate-200">Acessibilidade do Portal:</span>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-2 sm:gap-4">
+                <!-- Text Size Controls -->
+                <div class="flex items-center space-x-1 border-r border-brand-700 pr-3" role="group" aria-label="Ajuste do tamanho do texto">
+                    <span class="sr-only">Tamanho do texto</span>
+                    <button onclick="changeFontSize('sm')" class="px-2 py-0.5 rounded hover:bg-brand-700 font-bold focus:ring-1 focus:ring-yellow-400" title="Texto Pequeno">A-</button>
+                    <button onclick="changeFontSize('md')" class="px-2 py-0.5 rounded hover:bg-brand-700 font-bold focus:ring-1 focus:ring-yellow-400" title="Texto Normal">A</button>
+                    <button onclick="changeFontSize('lg')" class="px-2 py-0.5 rounded hover:bg-brand-700 font-bold focus:ring-1 focus:ring-yellow-400" title="Texto Grande">A+</button>
+                </div>
+
+                <!-- High Contrast Toggle -->
+                <button onclick="toggleHighContrast()" id="btn-contrast" class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-brand-800 hover:bg-brand-700 focus:ring-2 focus:ring-yellow-400">
+                    <i class="fa-solid fa-circle-half-stroke text-yellow-400" aria-hidden="true"></i>
+                    <span>Alto Contraste</span>
+                </button>
+
+                <!-- Dyslexia Font Toggle -->
+                <button onclick="toggleDyslexicFont()" id="btn-dyslexic" class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-brand-800 hover:bg-brand-700 focus:ring-2 focus:ring-yellow-400">
+                    <i class="fa-solid fa-font" aria-hidden="true"></i>
+                    <span>Fonte Legível</span>
+                </button>
+
+                <!-- Screen Reader Info Modal Trigger -->
+                <button onclick="toggleModal('modal-accessibility-help')" class="flex items-center space-x-1.5 px-2 py-1 underline hover:text-yellow-300 focus:ring-1 focus:ring-yellow-400">
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                    <span>Ajuda de Acessibilidade</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <a href="#" onclick="navigateTo('home')" class="flex items-center gap-3 group focus:ring-2 focus:ring-brand-700 rounded-lg p-1" aria-label="TecAssistIn - Ir para a página inicial">
+                        <!-- Custom SVG Logo Matching User's Image -->
+                        <div class="w-12 h-12 flex-shrink-0 bg-brand-700 rounded-lg p-1.5 shadow-sm group-hover:bg-brand-800 transition">
+                            <svg viewBox="0 0 100 100" class="w-full h-full fill-white" aria-hidden="true">
+                                <path d="M44,5 L56,5 L58,15 L66,18 L74,11 L83,20 L76,28 L82,36 L92,38 L92,50 L82,52 L80,60 L89,68 L80,77 L72,70 L64,76 L62,86 L50,86 L48,76 L40,74 L32,81 L23,72 L30,64 L24,56 L14,54 L14,42 L24,40 L26,32 L17,24 L26,15 L34,22 L42,16 Z" opacity="0.95"/>
+                                <circle cx="50" cy="46" r="30" fill="#0f3c6e" />
+                                <path d="M48,18 L60,54 L52,54 L48,42 L38,42 L34,54 L26,54 Z M43,28 L39,37 L47,37 Z" fill="#ffffff"/>
+                                <path d="M32,52 C45,45 60,35 78,18 L78,30 L84,18 L72,16 L78,18 C62,33 46,43 32,52 Z" fill="#ffffff"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-2xl font-black text-brand-800 tracking-tight leading-none block">TecAssistIn</span>
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest block mt-0.5">Tecnologia Assistiva & Inclusão</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1" aria-label="Menu Principal">
+                    <button onclick="navigateTo('home')" class="nav-btn px-3 py-2 rounded-md font-semibold text-slate-700 hover:text-brand-700 hover:bg-slate-100 focus:bg-slate-100">Início</button>
+                    <button onclick="filterCategory('visual')" class="nav-btn px-3 py-2 rounded-md font-semibold text-slate-700 hover:text-brand-700 hover:bg-slate-100 focus:bg-slate-100">Visão</button>
+                    <button onclick="filterCategory('auditiva')" class="nav-btn px-3 py-2 rounded-md font-semibold text-slate-700 hover:text-brand-700 hover:bg-slate-100 focus:bg-slate-100">Audição</button>
+                    <button onclick="filterCategory('motor')" class="nav-btn px-3 py-2 rounded-md font-semibold text-slate-700 hover:text-brand-700 hover:bg-slate-100 focus:bg-slate-100">Mobilidade</button>
+                    <button onclick="filterCategory('software')" class="nav-btn px-3 py-2 rounded-md font-semibold text-slate-700 hover:text-brand-700 hover:bg-slate-100 focus:bg-slate-100">Software & IA</button>
+                </nav>
+
+                <!-- Search & User Actions -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleSearchModal()" class="p-2.5 rounded-full text-slate-600 hover:bg-slate-100 focus:ring-2 focus:ring-brand-700" title="Pesquisar notícias" aria-label="Abrir busca de notícias">
+                        <i class="fa-solid fa-magnifying-glass text-lg" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- User Account / Admin Badge Button -->
+                    <div id="auth-button-container">
+                        <!-- Dynamic Auth Button injected by JS -->
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:ring-2 focus:ring-brand-700" aria-label="Abrir menu de navegação">
+                        <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-2">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100">Início</button>
+            <button onclick="filterCategory('visual'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100">Deficiência Visual</button>
+            <button onclick="filterCategory('auditiva'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100">Deficiência Auditiva</button>
+            <button onclick="filterCategory('motor'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100">Mobilidade & Próteses</button>
+            <button onclick="filterCategory('software'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100">Software & IA Acessível</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" tabindex="-1">
+        
+        <!-- ALERT BAR / ANNOUNCEMENTS -->
+        <div id="portal-banner" class="mb-8 p-4 bg-brand-50 border-l-4 border-brand-700 rounded-r-lg shadow-sm flex items-start justify-between">
+            <div class="flex items-start space-x-3">
+                <i class="fa-solid fa-bullhorn text-brand-700 text-xl mt-0.5" aria-hidden="true"></i>
+                <div>
+                    <h2 class="font-bold text-brand-900 text-sm sm:text-base">Bem-vindo ao Portal TecAssistIn</h2>
+                    <p class="text-sm text-slate-700 mt-0.5">Jornalismo focado em acessibilidade, tecnologias assistivas e direitos das pessoas com deficiência. Experimente o leitor de voz nas notícias!</p>
+                </div>
+            </div>
+            <button onclick="document.getElementById('portal-banner').remove()" class="text-slate-400 hover:text-slate-600 p-1" aria-label="Fechar aviso">
+                <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <!-- DYNAMIC VIEWS -->
+        <div id="view-home" class="view-section space-y-10">
+            <!-- HERO FEATURED ARTICLE -->
+            <section aria-label="Notícia em Destaque" id="hero-section">
+                <!-- Injected via JavaScript -->
+            </section>
+
+            <!-- CATEGORY FILTER TAGS & RECENT NEWS GRID -->
+            <section aria-label="Notícias Recentes">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-4 mb-6 gap-4">
+                    <h2 id="section-title" class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-newspaper text-brand-700" aria-hidden="true"></i>
+                        <span>Últimas Publicações</span>
+                    </h2>
+
+                    <!-- Category Pills -->
+                    <div class="flex flex-wrap gap-2" role="region" aria-label="Filtrar por categoria">
+                        <button onclick="filterCategory('all')" class="cat-pill active-cat border px-3 py-1 rounded-full text-xs font-semibold bg-brand-700 text-white border-brand-700 hover:bg-brand-800">Todas</button>
+                        <button onclick="filterCategory('visual')" class="cat-pill border px-3 py-1 rounded-full text-xs font-semibold bg-white text-slate-700 border-slate-300 hover:bg-slate-100">Visão</button>
+                        <button onclick="filterCategory('auditiva')" class="cat-pill border px-3 py-1 rounded-full text-xs font-semibold bg-white text-slate-700 border-slate-300 hover:bg-slate-100">Audição</button>
+                        <button onclick="filterCategory('motor')" class="cat-pill border px-3 py-1 rounded-full text-xs font-semibold bg-white text-slate-700 border-slate-300 hover:bg-slate-100">Mobilidade</button>
+                        <button onclick="filterCategory('software')" class="cat-pill border px-3 py-1 rounded-full text-xs font-semibold bg-white text-slate-700 border-slate-300 hover:bg-slate-100">Software</button>
+                    </div>
+                </div>
+
+                <!-- Articles Grid -->
+                <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamic Grid Rendering -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ARTICLE DETAIL VIEW -->
+        <div id="view-article" class="view-section hidden max-w-4xl mx-auto space-y-8">
+            <button onclick="navigateTo('home')" class="inline-flex items-center space-x-2 text-brand-700 font-semibold hover:underline focus:ring-2 focus:ring-brand-700 p-1 rounded">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                <span>Voltar para as notícias</span>
+            </button>
+
+            <article id="article-detail-content" class="bg-white p-6 sm:p-10 rounded-xl shadow-sm border border-slate-200 space-y-6 card-bg">
+                <!-- Article detailed content dynamically generated -->
+            </article>
+        </div>
+
+        <!-- ADMIN DASHBOARD VIEW -->
+        <div id="view-admin" class="view-section hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm card-bg">
+                <div class="flex flex-wrap justify-between items-center pb-6 border-b border-slate-200 gap-4">
+                    <div>
+                        <span class="inline-block px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded mb-2">Painel de Administração</span>
+                        <h1 class="text-3xl font-extrabold text-slate-900">Gerenciador de Notícias</h1>
+                        <p class="text-slate-600 text-sm mt-1">Crie, edite ou remova matérias do portal TecAssistIn.</p>
+                    </div>
+                    <button onclick="openNewArticleModal()" class="px-4 py-2.5 bg-brand-700 text-white font-bold rounded-lg hover:bg-brand-800 transition flex items-center gap-2 focus:ring-2 focus:ring-brand-700">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        <span>Nova Matéria</span>
+                    </button>
+                </div>
+
+                <div class="mt-6 overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                                <th class="p-3 font-bold">Título da Notícia</th>
+                                <th class="p-3 font-bold">Categoria</th>
+                                <th class="p-3 font-bold">Data</th>
+                                <th class="p-3 font-bold">Status</th>
+                                <th class="p-3 font-bold text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-articles-list" class="divide-y divide-slate-200">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-900 text-white border-t border-brand-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white rounded p-1">
+                            <svg viewBox="0 0 100 100" class="w-full h-full fill-brand-800" aria-hidden="true">
+                                <path d="M44,5 L56,5 L58,15 L66,18 L74,11 L83,20 L76,28 L82,36 L92,38 L92,50 L82,52 L80,60 L89,68 L80,77 L72,70 L64,76 L62,86 L50,86 L48,76 L40,74 L32,81 L23,72 L30,64 L24,56 L14,54 L14,42 L24,40 L26,32 L17,24 L26,15 L34,22 L42,16 Z"/>
+                                <circle cx="50" cy="46" r="30" fill="#ffffff" />
+                                <path d="M48,18 L60,54 L52,54 L48,42 L38,42 L34,54 L26,54 Z M43,28 L39,37 L47,37 Z" fill="#0f3c6e"/>
+                            </svg>
+                        </div>
+                        <span class="text-2xl font-black text-white">TecAssistIn</span>
+                    </div>
+                    <p class="text-slate-300 text-sm max-w-md leading-relaxed">
+                        Portal jornalístico independente focado no desenvolvimento, regulamentação e disseminação de tecnologias assistivas, acessibilidade web e igualdade de oportunidades.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-yellow-400 text-base mb-3">Categorias</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li><a href="#" onclick="filterCategory('visual')" class="hover:underline focus:ring-1 focus:ring-yellow-400">Tecnologia Visual</a></li>
+                        <li><a href="#" onclick="filterCategory('auditiva')" class="hover:underline focus:ring-1 focus:ring-yellow-400">Tecnologia Auditiva</a></li>
+                        <li><a href="#" onclick="filterCategory('motor')" class="hover:underline focus:ring-1 focus:ring-yellow-400">Mobilidade e Robótica</a></li>
+                        <li><a href="#" onclick="filterCategory('software')" class="hover:underline focus:ring-1 focus:ring-yellow-400">Inteligência Artificial & Apps</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-yellow-400 text-base mb-3">Compromisso e Acessibilidade</h3>
+                    <p class="text-xs text-slate-300 mb-3">Este portal foi desenvolvido conforme os padrões WCAG 2.1 nível AAA do W3C.</p>
+                    <button onclick="toggleModal('modal-accessibility-help')" class="text-xs bg-brand-800 hover:bg-brand-700 px-3 py-2 rounded text-white border border-brand-700 font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-universal-access text-yellow-400" aria-hidden="true"></i> Declaração de Acessibilidade
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-brand-800 pt-6 text-center sm:flex sm:justify-between sm:text-left text-xs text-slate-400">
+                <p>&copy; 2026 Portal TecAssistIn. Conteúdo sob licença Creative Commons BY-SA 4.0.</p>
+                <p class="mt-2 sm:mt-0">Desenvolvido com foco em Design Universal e Acessibilidade Humana.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SEARCH MODAL -->
+    <div id="modal-search" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-start justify-center pt-20 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full p-6 border border-slate-200 card-bg">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-brand-700" aria-hidden="true"></i> Pesquisar Notícias
+                </h2>
+                <button onclick="toggleSearchModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded focus:ring-2 focus:ring-brand-700" aria-label="Fechar busca">
+                    <i class="fa-solid fa-xmark text-xl" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="mt-4">
+                <label for="search-input" class="sr-only">Digite palavras-chave para buscar</label>
+                <input type="text" id="search-input" onkeyup="handleSearch(event)" placeholder="Ex: leitor de tela, prótese, aplicativo, braille..." class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-700 focus:outline-none text-slate-900">
+            </div>
+            <div id="search-results" class="mt-4 max-h-60 overflow-y-auto space-y-2">
+                <!-- Search results injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH / LOGIN MODAL -->
+    <div id="modal-auth" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 sm:p-8 border border-slate-200 card-bg">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200">
+                <h2 class="text-xl font-extrabold text-slate-900">Acessar Conta</h2>
+                <button onclick="toggleModal('modal-auth')" class="text-slate-400 hover:text-slate-600 p-1" aria-label="Fechar modal de acesso">
+                    <i class="fa-solid fa-xmark text-xl" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="mt-6 space-y-4">
+                <p class="text-xs text-slate-600">Selecione o tipo de acesso para simular a navegação do portal:</p>
+                
+                <button onclick="loginAs('reader')" class="w-full p-4 border border-slate-300 hover:border-brand-700 rounded-lg text-left flex items-center space-x-4 transition hover:bg-slate-50 focus:ring-2 focus:ring-brand-700">
+                    <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-900 block">Entrar como Leitor</span>
+                        <span class="text-xs text-slate-500">Navegue pelas notícias, salve favoritos e comente nas matérias.</span>
+                    </div>
+                </button>
+
+                <button onclick="loginAs('admin')" class="w-full p-4 border border-amber-300 bg-amber-50/50 hover:bg-amber-50 rounded-lg text-left flex items-center space-x-4 transition focus:ring-2 focus:ring-amber-600">
+                    <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-amber-950 block">Entrar como Administrador</span>
+                        <span class="text-xs text-amber-800">Painel completo de edição, criação e exclusão de matérias.</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW ARTICLE MODAL (ADMIN) -->
+    <div id="modal-new-article" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 my-8 border border-slate-200 card-bg">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Publicar Nova Matéria</h2>
+                <button onclick="toggleModal('modal-new-article')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar formulário">
+                    <i class="fa-solid fa-xmark text-xl" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <form id="form-new-article" onsubmit="saveArticle(event)" class="mt-6 space-y-4">
+                <div>
+                    <label for="art-title" class="block text-sm font-bold text-slate-800 mb-1">Título da Notícia *</label>
+                    <input type="text" id="art-title" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-700 text-slate-900" placeholder="Ex: Novo software converte Libras em áudio em tempo real">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="art-category" class="block text-sm font-bold text-slate-800 mb-1">Categoria *</label>
+                        <select id="art-category" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-700 text-slate-900">
+                            <option value="visual">Deficiência Visual</option>
+                            <option value="auditiva">Deficiência Auditiva</option>
+                            <option value="motor">Mobilidade e Robótica</option>
+                            <option value="software">Software e Inteligência Artificial</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="art-author" class="block text-sm font-bold text-slate-800 mb-1">Autor / Jornalista *</label>
+                        <input type="text" id="art-author" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-700 text-slate-900" value="Redação TecAssistIn">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="art-summary" class="block text-sm font-bold text-slate-800 mb-1">Resumo / Subtítulo *</label>
+                    <textarea id="art-summary" required rows="2" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-700 text-slate-900" placeholder="Breve introdução que aparecerá nos cartões de notícias."></textarea>
+                </div>
+
+                <div>
+                    <label for="art-content" class="block text-sm font-bold text-slate-800 mb-1">Conteúdo da Notícia *</label>
+                    <textarea id="art-content" required rows="6" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-700 text-slate-900" placeholder="Escreva o artigo completo aqui..."></textarea>
+                </div>
+
+                <div>
+                    <label for="art-image-alt" class="block text-sm font-bold text-slate-800 mb-1">Descrição Acessível da Imagem (Texto Alt) *</label>
+                    <input type="text" id="art-image-alt" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-700 text-slate-900" placeholder="Descrição minuciosa da imagem para leitores de tela">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+                    <button type="button" onclick="toggleModal('modal-new-article')" class="px-4 py-2 border border-slate-300 rounded-lg font-bold text-slate-700 hover:bg-slate-100">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-brand-700 text-white rounded-lg font-bold hover:bg-brand-800 focus:ring-2 focus:ring-brand-700">Publicar Matéria</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ACCESSIBILITY HELP MODAL -->
+    <div id="modal-accessibility-help" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 card-bg space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-universal-access text-brand-700" aria-hidden="true"></i> Recursos de Acessibilidade
+                </h2>
+                <button onclick="toggleModal('modal-accessibility-help')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar ajuda">
+                    <i class="fa-solid fa-xmark text-xl" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-sm text-slate-700">
+                <p><strong>Teclas de Atalho do Navegador:</strong></p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><kbd class="px-1.5 py-0.5 bg-slate-100 border rounded font-mono">Tab</kbd>: Navegar entre elementos interativos.</li>
+                    <li><kbd class="px-1.5 py-0.5 bg-slate-100 border rounded font-mono">Shift + Tab</kbd>: Voltar ao elemento anterior.</li>
+                    <li><kbd class="px-1.5 py-0.5 bg-slate-100 border rounded font-mono">Enter / Espaço</kbd>: Ativar botões e links.</li>
+                </ul>
+                <p><strong>Leitor de Voz Integrado:</strong> Todas as matérias possuem um botão "Ouvir Notícia" que sintetiza o áudio da reportagem.</p>
+                <p><strong>Contraste e Tipografia:</strong> Utilize a barra superior azul escura para ativar alto contraste ou alterar o tamanho da fonte a qualquer momento.</p>
+            </div>
+            <button onclick="toggleModal('modal-accessibility-help')" class="w-full py-2 bg-brand-700 text-white font-bold rounded-lg hover:bg-brand-800">Entendido</button>
+        </div>
+    </div>
+
+    <!-- JS Externo -->
+    <script src="script.js"></script>
+</body>
+</html>
