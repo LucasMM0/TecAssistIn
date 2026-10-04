@@ -171,7 +171,10 @@ function renderHero() {
     const container = document.getElementById('hero-section');
     const featured = state.articles.find(a => a.featured) || state.articles[0];
 
-    if (!featured) return;
+    if (!featured) {
+        container.innerHTML = '';
+        return;
+    }
 
     container.innerHTML = `
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12 card-bg hover:shadow-md transition">
@@ -266,7 +269,7 @@ function filterCategory(cat) {
 
 /* RENDER ARTICLE DETAIL */
 function renderArticleDetail(id) {
-    const article = state.articles.find(a => a.id === id);
+    const article = state.articles.find(a => String(a.id) === String(id));
     if (!article) return;
 
     const container = document.getElementById('article-detail-content');
@@ -354,7 +357,7 @@ function speakArticle() {
         return;
     }
 
-    const article = state.articles.find(a => a.id === state.currentArticleId);
+    const article = state.articles.find(a => String(a.id) === String(state.currentArticleId));
     if (!article) return;
 
     const textToRead = `${article.title}. Por ${article.author}. ${article.summary}. ${article.content}`;
@@ -396,7 +399,7 @@ function renderAdminTable() {
                 <button onclick="editArticle('${art.id}')" class="p-1.5 text-brand-700 hover:bg-slate-100 rounded" title="Editar matéria" aria-label="Editar ${art.title}">
                     <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                 </button>
-                <button onclick="deleteArticle('${art.id}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Eliminar notícia" aria-label="Eliminar ${art.title}">
+                <button onclick="deleteArticle('${art.id}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Excluir matéria" aria-label="Excluir ${art.title}">
                     <i class="fa-solid fa-trash" aria-hidden="true"></i>
                 </button>
             </td>
@@ -413,7 +416,7 @@ function openNewArticleModal() {
 }
 
 function editArticle(id) {
-    const art = state.articles.find(a => a.id === id);
+    const art = state.articles.find(a => String(a.id) === String(id));
     if (!art) return;
 
     document.getElementById('art-id').value = art.id;
@@ -450,8 +453,8 @@ function saveArticle(e) {
     };
 
     if (id) {
-        // Atualiza a matéria existente
-        const artIndex = state.articles.findIndex(a => a.id === id);
+        // Atualiza matéria existente
+        const artIndex = state.articles.findIndex(a => String(a.id) === String(id));
         if (artIndex !== -1) {
             state.articles[artIndex] = {
                 ...state.articles[artIndex],
@@ -466,7 +469,7 @@ function saveArticle(e) {
             };
         }
     } else {
-        // Cria uma nova matéria
+        // Cria nova matéria
         const newArt = {
             id: Date.now().toString(),
             title,
@@ -488,8 +491,26 @@ function saveArticle(e) {
     toggleModal('modal-new-article');
     document.getElementById('form-new-article').reset();
     renderAdminTable();
+    renderArticlesGrid();
+    renderHero();
     alert(id ? 'Matéria atualizada com sucesso!' : 'Matéria publicada com sucesso!');
 }
+
+function deleteArticle(id) {
+    const articleId = String(id);
+    const article = state.articles.find(a => String(a.id) === articleId);
+    const title = article ? article.title : 'esta matéria';
+
+    if (confirm(`Tem certeza que deseja remover a matéria "${title}"?`)) {
+        state.articles = state.articles.filter(a => String(a.id) !== articleId);
+        saveStateToStorage();
+        renderAdminTable();
+        renderArticlesGrid();
+        renderHero();
+        alert('Matéria excluída com sucesso!');
+    }
+}
+
 /* ACCESSIBILITY CONTROLS */
 function changeFontSize(size) {
     document.documentElement.classList.remove('font-scale-sm', 'font-scale-md', 'font-scale-lg', 'font-scale-xl');
@@ -552,7 +573,7 @@ function handleSearch(e) {
 }
 
 function bookmarkArticle(id) {
-    const art = state.articles.find(a => a.id === id);
+    const art = state.articles.find(a => String(a.id) === String(id));
     if (art) {
         art.bookmarksCount = (art.bookmarksCount || 0) + 1;
         saveStateToStorage();
