@@ -62,18 +62,21 @@ const initialArticles = [
 let state = {
     articles: JSON.parse(localStorage.getItem('tecassistin_articles')) || initialArticles,
     currentUser: JSON.parse(localStorage.getItem('tecassistin_user')) || { role: 'guest', name: 'Visitante' },
+    accessibility: JSON.parse(localStorage.getItem('tecassistin_acc')) || {
+        fontSize: 'md',
+        highContrast: false,
+        dyslexicFont: false
+    },
     currentCategory: 'all',
     activeView: 'home',
     currentArticleId: null,
-    highContrast: false,
-    dyslexicFont: false,
-    fontSize: 'md',
     isSpeaking: false
 };
 
 /* INITIALIZATION */
 window.addEventListener('DOMContentLoaded', () => {
     saveStateToStorage();
+    applyAccessibilityPreferences();
     renderAuthButton();
     renderHero();
     renderArticlesGrid();
@@ -83,6 +86,49 @@ window.addEventListener('DOMContentLoaded', () => {
 function saveStateToStorage() {
     localStorage.setItem('tecassistin_articles', JSON.stringify(state.articles));
     localStorage.setItem('tecassistin_user', JSON.stringify(state.currentUser));
+    localStorage.setItem('tecassistin_acc', JSON.stringify(state.accessibility));
+}
+
+/* ACCESSIBILITY ENGINE */
+function applyAccessibilityPreferences() {
+    // Aplicar escala de fonte
+    document.documentElement.classList.remove('font-scale-sm', 'font-scale-md', 'font-scale-lg', 'font-scale-xl');
+    document.documentElement.classList.add(`font-scale-${state.accessibility.fontSize}`);
+
+    // Aplicar Alto Contraste
+    if (state.accessibility.highContrast) {
+        document.body.classList.add('high-contrast');
+    } else {
+        document.body.classList.remove('high-contrast');
+    }
+
+    // Aplicar Fonte Legível para Dislexia
+    if (state.accessibility.dyslexicFont) {
+        document.body.classList.add('dyslexic-mode');
+    } else {
+        document.body.classList.remove('dyslexic-mode');
+    }
+}
+
+function changeFontSize(size) {
+    const validSizes = ['sm', 'md', 'lg', 'xl'];
+    if (validSizes.includes(size)) {
+        state.accessibility.fontSize = size;
+        applyAccessibilityPreferences();
+        saveStateToStorage();
+    }
+}
+
+function toggleHighContrast() {
+    state.accessibility.highContrast = !state.accessibility.highContrast;
+    applyAccessibilityPreferences();
+    saveStateToStorage();
+}
+
+function toggleDyslexicFont() {
+    state.accessibility.dyslexicFont = !state.accessibility.dyslexicFont;
+    applyAccessibilityPreferences();
+    saveStateToStorage();
 }
 
 /* NAVIGATION & VIEWS */
@@ -509,23 +555,6 @@ function deleteArticle(id) {
         renderHero();
         alert('Matéria excluída com sucesso!');
     }
-}
-
-/* ACCESSIBILITY CONTROLS */
-function changeFontSize(size) {
-    document.documentElement.classList.remove('font-scale-sm', 'font-scale-md', 'font-scale-lg', 'font-scale-xl');
-    document.documentElement.classList.add(`font-scale-${size}`);
-    state.fontSize = size;
-}
-
-function toggleHighContrast() {
-    document.body.classList.toggle('high-contrast');
-    state.highContrast = !state.highContrast;
-}
-
-function toggleDyslexicFont() {
-    document.body.classList.toggle('dyslexic-mode');
-    state.dyslexicFont = !state.dyslexicFont;
 }
 
 /* UTILITY MODALS & SEARCH */
