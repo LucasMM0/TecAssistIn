@@ -1,2 +1,2 @@
 # TecAssistIn
-Um portal de Tecnologia Assistiva
+Um portal de Tecnologia Assistiva, desenvolvido com o objetivo de informar sobre quais tecnologias existem para facilitar o dia a dia de quem tem dificuldade em realizar alguma tarefa. As pessoas com deficiência são as que mais utilizam as T.As, mas isso não quer dizer que qualquer pessoa não possa utilizar. Então sinta-se livre para contribuir com esse projeto, seja compartilhando ou se mantendo informado(a). Agradeço a visita ao repositório e até mais!
