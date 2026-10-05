@@ -91,18 +91,19 @@ function saveStateToStorage() {
 
 /* ACCESSIBILITY ENGINE */
 function applyAccessibilityPreferences() {
-    // Aplicar escala de fonte
-    document.documentElement.classList.remove('font-scale-sm', 'font-scale-md', 'font-scale-lg', 'font-scale-xl');
-    document.documentElement.classList.add(`font-scale-${state.accessibility.fontSize}`);
+    // 1. Aplica a escala de fonte no HTML raiz
+    const root = document.documentElement;
+    root.classList.remove('font-scale-sm', 'font-scale-md', 'font-scale-lg', 'font-scale-xl');
+    root.classList.add(`font-scale-${state.accessibility.fontSize}`);
 
-    // Aplicar Alto Contraste
+    // 2. Aplica Alto Contraste no BODY
     if (state.accessibility.highContrast) {
         document.body.classList.add('high-contrast');
     } else {
         document.body.classList.remove('high-contrast');
     }
 
-    // Aplicar Fonte Legível para Dislexia
+    // 3. Aplica Fonte Legivel no BODY
     if (state.accessibility.dyslexicFont) {
         document.body.classList.add('dyslexic-mode');
     } else {
